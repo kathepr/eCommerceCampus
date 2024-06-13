@@ -1,23 +1,25 @@
+import { menuListCategoryIndex } from "./components/menu.js";
 import { galleryIndex } from "./components/gallery.js";
 import { getAllProductName, getAllCategory } from "./module/app.js";
-import { menuListCategoryIndex } from "./components/menu.js";
+
 // let headerInformation = document.querySelector(".header__information");
 // let [p, span] = headerInformation;
 // span.innerHTML = "Daniel";
 
-let inputSearch = document.querySelector("#input__search");
-let mainArticle = document.querySelector(".main__article");
-let navUl = document.querySelector(".nav__ul");
+let input__search = document.querySelector("#input__search");
+let main__article = document.querySelector(".main__article");
+let nav__ul = document.querySelector(".nav__ul");
 
 addEventListener("DOMContentLoaded", async e =>{
-    let data = await getAllCategory();
-    navUl.innerHTML = await menuListCategoryIndex(data);
+    if(!localStorage.getItem("getAllCategory")) localStorage.setItem("getAllCategory", JSON.stringify(await getAllCategory()));
+    nav__ul.innerHTML = await menuListCategoryIndex(JSON.parse(localStorage.getItem("getAllCategory")))
+
 });
 
-inputSearch.addEventListener("change", async e =>{
-    let data = {search : e.target.value}
-    inputSearch.value = null;
-
+input__search.addEventListener("change", async e =>{
+    let params = new URLSearchParams(location.search)
+    let data = {search : e.target.value, id: params.get("id")}
+    input__search.value = null;
     let res = await getAllProductName(data)
-    mainArticle.innerHTML = galleryIndex(res);
+    main__article.innerHTML = galleryIndex(res, params.get("id"));
 });
