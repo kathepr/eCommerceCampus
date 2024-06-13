@@ -2,9 +2,6 @@ import { menuListCategoryIndex } from "./components/menu.js";
 import { galleryIndex } from "./components/gallery.js";
 import { getAllProductName, getAllCategory } from "./module/app.js";
 
-// let headerInformation = document.querySelector(".header__information");
-// let [p, span] = headerInformation;
-// span.innerHTML = "Daniel";
 
 let input__search = document.querySelector("#input__search");
 let main__article = document.querySelector(".main__article");
