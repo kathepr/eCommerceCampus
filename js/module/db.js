@@ -1,9 +1,11 @@
-import { getProducId } from "./detail.js";
+import { getAllProductById } from "../detail2";
 
-export const openRequest = indexedDB.open("storage", 1);
-openRequest.onupgradeneeded = async()=>{
-    let {about__product} = data
-    let db = openRequest = data
-};
-
-let db = openRequest.result;
+export const openRequest = indexDB.open("storage", 1);
+openRequest.onupgradeneeded = async function() {
+    let params = new URLSearchParams(location.search);
+    let {data} = await getAllProductById({ id : params.get("id") });
+    let db = openRequest.result;
+    if (!db.objectStoreNames.contains("about_product")) {
+        db.createObjectStore("about_product", {keypath : "id"});
+    }
+}
