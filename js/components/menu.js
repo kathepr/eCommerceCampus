@@ -1,15 +1,14 @@
-export const menuListCategoryIndex = (res)=>{
+export const menuListCategoryIndex = async (res)=>{
     let {data} = res;
     let plantilla = "";
-    data.forEach((value, index) => {
-        plantilla += /*html*/`
-        <li title="${value.name}">
-            <a href="?id=${value.id}" >
-                <img src="storage/img/category.svg" >
-                <span>${value.name}</span>
+    data.forEach(element => {
+        plantilla+=/*html*/` 
+        <li title="${element.name}">
+            <a href="?id=${element.id} ">
+                <img src="storage/img/category.svg" alt="">
+                <span>${element.name}</span>
             </a>
-        </li>
-        `;
+        </li>`
     });
-    return plantilla;
+    return plantilla
 }
