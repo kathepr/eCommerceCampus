@@ -1,70 +1,90 @@
-export const titleProductDetail = async({data}) =>{
+export const titleProductDetail = async ({data : dataUpdate} = res  ) => {
     return /*html*/`
     <article class="article__detail">
         <div class="detail__head">
-            <h1>
-                ${data.product_title}
-            </h1>
+            <h1>${dataUpdate.product_title}</h1>
             <div class="product__select">
-                <img src="../storage/img/minus.svg">
-                <span>1</span>
-                <img src="../storage/img/plus.svg">
+                <img id="menos" src="../storage/img/minus.svg">
+                <span id="num" >1</span>
+                <img id="mas" src="../storage/img/plus.svg">
             </div>
         </div>
         <div class="detail__score">
-            ${data.product_star_rating ? new Array(parseInt(data.product_star_rating)).fill(`<img src="../storage/img/star.svg">`).join('') : 'Producto no calificado'}
-            <span>${(data.product_star_rating != null) ? data.product_star_rating: 0}</span>
-            <a href="${data.product_url}">(${(data.product_num_ratings != null) ? data.product_num_ratings: 0} reviews)</a>
+            ${dataUpdate.product_star_rating  !== null ? new Array(parseInt(dataUpdate.product_star_rating)).fill(`<img src="../storage/img/star.svg">`).join('') : ""}
+            <span>${dataUpdate.product_star_rating !== null ?  dataUpdate.product_star_rating : ""}</span>
+            <p><a href="${dataUpdate.product_url}">${dataUpdate.product_num_ratings !== null ? `${dataUpdate.product_num_ratings} reviews` : ""}</a></p>
         </div>
     </article>`;
 }
 
-export const infomationProductDetail = async({data}) =>{
-    console.log(data)
+    export const descriptionProductDetail = async ({data : dataUpdate} = res) => {
+        if (dataUpdate.product_description !== null){
+            let descripcion = async() => {
+            let text = dataUpdate.product_description;
+            let description = text.toString();
+
+            if (description.length > 150) {
+                description = description.slice(0, 150)+'  <strong id="text">Read More. . .</strong>';
+            }
+            else {
+                description = description;
+            }
+
+            return description;
+        }
+
+        return /*html*/`
+        <article class="product__information">
+            <p id ="parrafo">${await descripcion()}</p>
+        </article>
+        `;}
+        else {
+            return "";
+        }
+        
+    }
+
+export const sizeProductDetail = async({data : dataUpdate} = res) => {
+
     return /*html*/`
-    <article class="product__information">
-                <p>
-                    ${(data.product_description != "") ? data.product_description: "Sin descripcion"} <strong>Read More. . .</strong>
-                </p>
-            </article>
-            <hr>
-        </section>
-        <section class="main__section">
-            <article class="product__custom">
-                <div class="product__size">
-                    <h5>
-                        Choose Size
-                    </h5>
-                    <div>
-                        <img src="../storage/img/s.svg">
-                        <img src="../storage/img/m.svg">
-                        <img src="../storage/img/l.svg">
-                        <img src="../storage/img/xl.svg">
-                    </div>
-                </div>
-                <div class="product__color">
-                    <h5>
-                        Color
-                    </h5>
-                    <div>
-                        <img src="../storage/img/1.svg">
-                        <img src="../storage/img/2.svg">
-                        <img src="../storage/img/3.svg">
-                    </div>
-                </div>
-            </article>`;
+    <article class="product__custom">
+        <div class="product__size">
+            <h5>Choose Size</h5>
+            <div class="product__size_img">
+                <img id="s" src="../storage/img/s.svg">
+                <img id="m" src="../storage/img/m.svg">
+                <img id="l" src="../storage/img/l.svg">
+                <img id="xl" src="../storage/img/xl.svg">
+            </div>
+        </div>
+        <div class="product__color">
+            <h5>Color</h5>
+            <div class="product__color_img">
+                <img src="../storage/img/color1.svg">
+                <img src="../storage/img/color2.svg">
+                <img src="../storage/img/color3.svg">
+            </div>
+        </div>
+    </article> `;   
 }
 
-export const footerProductDetail = async ({data})=>{
+export const valueProductDetail = async ({data : dataUpdate} = res) => {
+
+    const originalPrice = async() => {
+        if (dataUpdate.product_original_price === null) {
+            return '';
+        }
+        else {
+            return dataUpdate.product_original_price;
+        }
+    }
+
     return /*html*/`
-    <ul class="footer__ul">
-        <li>
-            <a href="checkout.html">
-                <img src="../storage/img/car.svg">
-                <span>Add to Cart | ${data.product_price}
-                <del><sub>${(data.product_original_price != null) ? data.product_original_price : ""}</sub> </del>
-                </span>
-            </a>
-        </li>
-    </ul>`
+    <li>
+        <a href="./checkout.html?id=${dataUpdate.asin}">
+            <img src="../storage/img/shopping-cart.svg">
+            <span id="precio" >Add to Car | ${dataUpdate.product_price} <sub>${await originalPrice()}</sub></span>
+        </a>
+    </li>
+    `;
 }
